@@ -1,4 +1,5 @@
 aiohttp
+anytree
 aria2p
 appdirs
 beautifulsoup4
@@ -8,12 +9,11 @@ gitpython
 google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
+gunicorn
 heroku3
-html-telegraph-poster
 js2py
 lk21
 lxml
-messages
 psutil
 psycopg2-binary
 pybase64
@@ -21,10 +21,12 @@ pyrogram
 python-dotenv
 python-magic
 python-telegram-bot
-pytz
+qbittorrent-api
 requests
 speedtest-cli
 telegraph
 tenacity
 TgCrypto
+torrentool
+urllib3
 youtube_dl

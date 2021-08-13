@@ -6,7 +6,7 @@ import os
 from bot.helper.ext_utils.bot_utils import new_thread, get_mega_link_type, get_readable_file_size
 from bot.helper.mirror_utils.status_utils.mega_download_status import MegaDownloadStatus
 from bot.helper.mirror_utils.upload_utils.gdriveTools import GoogleDriveHelper
-from bot import MEGA_LIMIT, STOP_DUPLICATE_MEGA, TAR_UNZIP_LIMIT
+from bot import MEGA_LIMIT, STOP_DUPLICATE, TAR_UNZIP_LIMIT
 import random
 import string
 
@@ -164,7 +164,7 @@ class MegaDownloadHelper:
             node = folder_api.authorizeNode(mega_listener.node)
         if mega_listener.error is not None:
             return listener.onDownloadError(str(mega_listener.error))
-        if STOP_DUPLICATE_MEGA:
+        if STOP_DUPLICATE:
             LOGGER.info(f'Checking File/Folder if already in Drive')
             mname = node.getName()
             if listener.isTar:
@@ -177,6 +177,7 @@ class MegaDownloadHelper:
             if smsg:
                 msg1 = "File/Folder is already available in Drive.\nHere are the search results:"
                 sendMarkup(msg1, listener.bot, listener.update, button)
+                executor.continue_event.set()
                 return
         if MEGA_LIMIT is not None or TAR_UNZIP_LIMIT is not None:
             limit = None
@@ -193,10 +194,12 @@ class MegaDownloadHelper:
                 if 'G' in limit[1] or 'g' in limit[1]:
                     if api.getSize(node) > limitint * 1024**3:
                         sendMessage(msg3, listener.bot, listener.update)
+                        executor.continue_event.set()
                         return
                 elif 'T' in limit[1] or 't' in limit[1]:
                     if api.getSize(node) > limitint * 1024**4:
                         sendMessage(msg3, listener.bot, listener.update)
+                        executor.continue_event.set()
                         return
         with download_dict_lock:
             download_dict[listener.uid] = MegaDownloadStatus(mega_listener, listener)
