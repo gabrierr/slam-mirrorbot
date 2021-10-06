@@ -117,7 +117,7 @@ class GoogleDriveHelper:
                                      resumable=False)
         file_metadata = {
             'name': file_name,
-            'description': 'Uploaded using Slam Mirrorbot',
+            'description': 'Uploaded using Zukky Mirrorbot',
             'mimeType': mime_type,
         }
         if parent_id is not None:
@@ -171,7 +171,7 @@ class GoogleDriveHelper:
         # File body description
         file_metadata = {
             'name': file_name,
-            'description': 'Uploaded by Slam Mirrorbot',
+            'description': 'Uploaded by Zukky Mirrorbot',
             'mimeType': mime_type,
         }
         try:
@@ -378,10 +378,10 @@ class GoogleDriveHelper:
                     msg = self.deletefile(durl)
                     LOGGER.info(f"{msg}")
                     return "your clone has been stopped and cloned data has been deleted!", "cancelled"
-                msg += f'<b>Filename: </b><code>{meta.get("name")}</code>\n<b>Size: </b><code>{get_readable_file_size(self.transferred_size)}</code>'
-                msg += f'\n<b>Type: </b><code>Folder</code>'
-                msg += f'\n<b>SubFolders: </b><code>{self.total_folders}</code>'
-                msg += f'\n<b>Files: </b><code>{self.total_files}</code>'
+                msg += f'<b>Nama: </b><code>{meta.get("name")}</code>\n<b>Size: </b><code>{get_readable_file_size(self.transferred_size)}</code>'
+                msg += f'\n<b>Tipe: </b><code>Folder</code>'
+                msg += f'\n<b>Jumlah Folders: </b><code>{self.total_folders}</code>'
+                msg += f'\n<b>Jumlah File: </b><code>{self.total_files}</code>'
                 buttons = button_build.ButtonMaker()
                 if SHORTENER is not None and SHORTENER_API is not None:
                     surl = requests.get(f'https://{SHORTENER}/api?api={SHORTENER_API}&url={durl}&format=text').text
@@ -404,7 +404,7 @@ class GoogleDriveHelper:
                     buttons.buildbutton(f"{BUTTON_SIX_NAME}", f"{BUTTON_SIX_URL}")
             else:
                 file = self.copyFile(meta.get('id'), parent_id)
-                msg += f'<b>Filename: </b><code>{file.get("name")}</code>'
+                msg += f'<b>Nama: </b><code>{file.get("name")}</code>'
                 durl = self.__G_DRIVE_BASE_DOWNLOAD_URL.format(file.get("id"))
                 buttons = button_build.ButtonMaker()
                 if SHORTENER is not None and SHORTENER_API is not None:
@@ -417,8 +417,8 @@ class GoogleDriveHelper:
                 except:
                     typeee = 'File' 
                 try:
-                    msg += f'\n<b>Size: </b><code>{get_readable_file_size(int(meta.get("size")))}</code>'
-                    msg += f'\n<b>Type: </b><code>{typeee}</code>'
+                    msg += f'\n<b>Ukuran: </b><code>{get_readable_file_size(int(meta.get("size")))}</code>'
+                    msg += f'\n<b>Tipe: </b><code>{typeee}</code>'
                 except TypeError:
                     pass
                 if INDEX_URL is not None:
@@ -558,9 +558,9 @@ class GoogleDriveHelper:
                     content += f'<b> | <a href="https://telegra.ph/{self.path[nxt_page]}">Next</a></b>'
                     nxt_page += 1
             Telegraph(access_token=telegraph_token).edit_page(path = self.path[prev_page],
-                                 title = 'Slam Mirrorbot Search',
-                                 author_name='Slam Mirrorbot',
-                                 author_url='https://github.com/breakdowns/slam-mirrorbot',
+                                 title = 'Pencarian Zukky Mirror',
+                                 author_name='Zukky Mirrorbot',
+                                 author_url='https://github.com/gabrierr/zukky-mirrorbot',
                                  html_content=content)
         return
 
@@ -643,9 +643,9 @@ class GoogleDriveHelper:
 
             for content in self.telegraph_content :
                 self.path.append(Telegraph(access_token=telegraph_token).create_page(
-                                                        title = 'Slam Mirrorbot Search',
-                                                        author_name='Slam Mirrorbot',
-                                                        author_url='https://github.com/breakdowns/slam-mirrorbot',
+                                                        title = 'Pencarian Zukky Mirrorbot',
+                                                        author_name='Zukky Mirrorbot',
+                                                        author_url='https://github.com/gabrierr/zukky-mirrorbot',
                                                         html_content=content
                                                         )['path'])
 
@@ -655,7 +655,7 @@ class GoogleDriveHelper:
 
             msg = f"<b>Found <code>{len(response['files'])}</code> results for <code>{fileName}</code></b>"
             buttons = button_build.ButtonMaker()   
-            buttons.buildbutton("🔎 VIEW", f"https://telegra.ph/{self.path[0]}")
+            buttons.buildbutton("🔎 Lihat", f"https://telegra.ph/{self.path[0]}")
 
             return msg, InlineKeyboardMarkup(buttons.build_menu(1))
 
@@ -677,13 +677,13 @@ class GoogleDriveHelper:
             LOGGER.info(f"Counting: {name}")
             if drive_file['mimeType'] == self.__G_DRIVE_DIR_MIME_TYPE:
                 self.gDrive_directory(**drive_file)
-                msg += f'<b>Filename: </b><code>{name}</code>'
-                msg += f'\n<b>Size: </b><code>{get_readable_file_size(self.total_bytes)}</code>'
-                msg += f'\n<b>Type: </b><code>Folder</code>'
-                msg += f'\n<b>SubFolders: </b><code>{self.total_folders}</code>'
-                msg += f'\n<b>Files: </b><code>{self.total_files}</code>'
+                msg += f'<b>Nama: </b><code>{name}</code>'
+                msg += f'\n<b>Ukuran: </b><code>{get_readable_file_size(self.total_bytes)}</code>'
+                msg += f'\n<b>Tipe: </b><code>Folder</code>'
+                msg += f'\n<b>Jumlah Folders: </b><code>{self.total_folders}</code>'
+                msg += f'\n<b>Jumlah File: </b><code>{self.total_files}</code>'
             else:
-                msg += f'<b>Filename: </b><code>{name}</code>'
+                msg += f'<b>Nama: </b><code>{name}</code>'
                 try:
                     typee = drive_file['mimeType']
                 except:
@@ -691,9 +691,9 @@ class GoogleDriveHelper:
                 try:
                     self.total_files += 1
                     self.gDrive_file(**drive_file)
-                    msg += f'\n<b>Size: </b><code>{get_readable_file_size(self.total_bytes)}</code>'
-                    msg += f'\n<b>Type: </b><code>{typee}</code>'
-                    msg += f'\n<b>Files: </b><code>{self.total_files}</code>'
+                    msg += f'\n<b>Ukuran: </b><code>{get_readable_file_size(self.total_bytes)}</code>'
+                    msg += f'\n<b>Tipe: </b><code>{typee}</code>'
+                    msg += f'\n<b>Jumlah File: </b><code>{self.total_files}</code>'
                 except TypeError:
                     pass
         except Exception as err:
@@ -860,10 +860,10 @@ class GoogleDriveHelper:
     def cancel_download(self):
         self.is_cancelled = True
         if self.is_downloading:
-            LOGGER.info(f"Cancelling Download: {self.name}")
-            self.__listener.onDownloadError('Download stopped by user!')
+            LOGGER.info(f"Membatalkan Download: {self.name}")
+            self.__listener.onDownloadError('Download dihentikan oleh user!')
         elif self.is_cloning:
-            LOGGER.info(f"Cancelling Clone: {self.name}")
+            LOGGER.info(f"Membatalkan Clone: {self.name}")
         elif self.is_uploading:
-            LOGGER.info(f"Cancelling upload: {self.name}")
+            LOGGER.info(f"Membatalkan upload: {self.name}")
             self.__listener.onUploadError('your upload has been stopped and uploaded data has been deleted!')
